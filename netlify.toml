@@ -1,5 +1,8 @@
 
 [build]
+  # 关键修复：将 command 设为空字符串，publish 设为当前目录 "."
+  # 这会告诉 Netlify 直接托管文件，而不尝试运行任何编译器
+  command = ""
   publish = "."
   functions = "netlify/functions"
 
