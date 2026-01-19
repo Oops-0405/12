@@ -8,6 +8,15 @@ export interface Product {
   features: string[];
 }
 
+export interface Inquiry {
+  id: string;
+  name: string;
+  company: string;
+  email: string;
+  message: string;
+  date: string;
+}
+
 export interface NavItem {
   label: string;
   href: string;
