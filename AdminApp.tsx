@@ -1,26 +1,20 @@
 
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { db } from './services/db.ts';
-import { Product, Inquiry } from './types.ts';
+import { db } from './services/db';
+import { Product, Inquiry } from './types';
 
 const AdminPanel = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [tab, setTab] = useState<'products' | 'inquiries'>('products');
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const refreshData = async () => {
-    setLoading(true);
-    try {
-      const p = await db.getProducts();
-      const i = await db.getInquiries();
-      setProducts(p || []);
-      setInquiries(i || []);
-    } finally {
-      setLoading(false);
-    }
+    const p = await db.getProducts();
+    const i = await db.getInquiries();
+    setProducts(p || []);
+    setInquiries(i || []);
   };
 
   useEffect(() => { refreshData(); }, []);
@@ -151,24 +145,24 @@ const AdminApp = () => {
   if (!isAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
-        <div className="bg-white p-10 rounded-[3rem] shadow-2xl w-full max-w-sm border border-white/20">
+        <div className="bg-white p-10 rounded-[3rem] shadow-2xl w-full max-sm:max-w-xs max-w-sm border border-white/20">
           <div className="text-center mb-10">
             <div className="w-20 h-20 bg-blue-600 rounded-[2rem] mx-auto mb-6 flex items-center justify-center text-white text-3xl font-black shadow-xl shadow-blue-500/40">H</div>
-            <h2 className="text-3xl font-black text-gray-900 tracking-tighter">AUTHENTICATION</h2>
-            <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mt-2">Restricted Security Terminal</p>
+            <h2 className="text-3xl font-black text-gray-900 tracking-tighter uppercase">Security</h2>
+            <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mt-2">Access Terminal</p>
           </div>
           <form onSubmit={(e) => { e.preventDefault(); if(pass === 'hangte2024') setIsAuth(true); else alert('INVALID KEY'); }} className="space-y-4">
             <input 
               autoFocus
               type="password" 
-              placeholder="••••••••" 
+              placeholder="••••" 
               className="w-full p-5 bg-gray-50 rounded-2xl text-center text-2xl tracking-[0.5em] outline-none border-2 border-transparent focus:border-blue-600 transition-all" 
               onChange={e => setPass(e.target.value)} 
             />
-            <button className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20">AUTHORIZE ACCESS</button>
+            <button className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 uppercase">Login</button>
           </form>
           <div className="mt-8 text-center">
-            <a href="index.html" className="text-[10px] font-black text-gray-300 hover:text-blue-600 uppercase tracking-widest transition-colors">← Exit Security Mode</a>
+            <a href="index.html" className="text-[10px] font-black text-gray-300 hover:text-blue-600 uppercase tracking-widest transition-colors">← Exit</a>
           </div>
         </div>
       </div>
@@ -184,7 +178,7 @@ const AdminApp = () => {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-[10px] font-black text-green-500 bg-green-50 px-2 py-1 rounded">SYSTEMS ONLINE</span>
-          <button onClick={() => setIsAuth(false)} className="text-[10px] font-black text-gray-400 hover:text-red-500 transition-colors uppercase tracking-widest">Terminate Session</button>
+          <button onClick={() => setIsAuth(false)} className="text-[10px] font-black text-gray-400 hover:text-red-500 transition-colors uppercase tracking-widest">Logout</button>
         </div>
       </header>
       <AdminPanel />

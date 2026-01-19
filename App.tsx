@@ -20,11 +20,11 @@ const App: React.FC = () => {
   useEffect(() => {
     const loadData = async () => {
       const data = await db.getProducts();
-      // 如果 API 没返回数据，使用常量兜底确保前端不空白
       if (data && data.length > 0) {
         setProducts(data);
       } else {
-        import('./constants.tsx').then(m => setProducts(m.PRODUCTS));
+        // 移除 .tsx 扩展名
+        import('./constants').then(m => setProducts(m.PRODUCTS));
       }
     };
     loadData();
@@ -132,7 +132,6 @@ const App: React.FC = () => {
       <main className="flex-grow">{renderView()}</main>
       <Footer onNavigate={(view: string) => navigate(view as View)} />
       <ChatBot />
-      {/* 移除了左下角的后台管理跳转，通过 /admin 直接访问 */}
     </div>
   );
 };
